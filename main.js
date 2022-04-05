@@ -1,39 +1,55 @@
 function handleNameInput(event) {
-    const name =  event.target.value;
+    const name = event.target.value;
     // const nameElement = document.getElementById('name');
     alert("The animal name is"  + name)
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
     event.preventDefault()
     const nameElement = document.getElementById('name')
 
     if(!nameElement.value){
-        alert("The name isrequired")
-        return;
+        nameElement.classList.add('is-invalid'); 
     }
 
     const breedImport = document.getElementById('breed')
 
     if(!breedImport.value){
-        alert("Please provide the breed")
-        return;
+        // alert("Please provide the breed")
+        breedImport.classList.add('is-invalid')
     }
 
     const age = document.getElementById('age').value
 
     if(!age){
-        alert("Age is nothing but a number")
-        return;
+        // alert("Age is nothing but a number")
+        document.getElementById('age').classList.add('is-invalid')
+        
     }
-    // try{
-    //  //Get all animals in server
-    //     const data = await fetch("http:/localhost:300/animals")
-    //     const animals = await data.json()
-    // }catch (error){
+    try {
+        const data = await fetch("http://localhost:5103/animals", 
+        {
+            method: "POST", 
+            body:JSON.stringify({
+                name: nameElement.value,
+                breed: breedImport.value,
+                age,
 
-    // }
-    // fetch("http://localhost:3000/animals", {
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const animal = await data.json()
+
+        alert(`Created succesfully ${animal}`)
+
+    } catch (error) {
+        
+    }
+
+    // fetch("http://localhost:5103/animals", 
+    // {
     //     method: "POST",
     //     body:JSON.stringity({
     //         name:nameElement.value,
@@ -44,7 +60,9 @@ function handleSubmit(event) {
     //         'Content-type': 'application/jsaon'
     //     }
     // })
+    // const animal = await data.json()
+    // alert(`Created succesfully ${animal}`)
     // .then(response => {
 
-    //})
-}
+//     })
+ }
